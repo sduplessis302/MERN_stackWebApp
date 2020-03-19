@@ -13,6 +13,7 @@ const validUser = new UserModel({
 
 const validTask = new TaskModel({
     user: validUser,
+    taskId: '1',
     title: 'title',
     description: 'Re-Doing all the things',
     location: 'science building',
@@ -26,7 +27,6 @@ const validTask = new TaskModel({
 process.env.TEST_SUITE = 'task-test';
 
 describe('Task Model Tests', () => {
-
     before(async () => {
         await mongoose.connect(`mongodb://127.0.0.1:27017/${process.env.TEST_SUITE}`, { useNewUrlParser: true}, (err) => {
             if (err) {
@@ -98,7 +98,6 @@ describe('Task Model Tests', () => {
 
     it('create task with incorrect user type & throws error.', async ()=>{
         const invalidTask = new TaskModel({
-            user: 'john',
             title: 'title',
             description: 'Re-Doing all the things',
             location: 'science building',
@@ -108,7 +107,7 @@ describe('Task Model Tests', () => {
             startDate: '2020-08-14T08:50:00+12:00',
             endDate: '2020-08-14T07:50:00+12:00'
         });
-    
+        
         var error = invalidTask.validateSync();
         assert.ok(error.errors['user'].message);
     });
